@@ -82,11 +82,14 @@ const Services = () => {
                 variant="outlined"
                 fullWidth
                 required
-                autoFocus
+                // autoFocus
                 value={formik.values.version}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              <span className="service_textbox_hints">
+                This is the URI your clients will connect to.
+              </span>
             </Grid>
 
             <Grid item xs={6}>
@@ -100,6 +103,9 @@ const Services = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              <span className="service_textbox_hints">
+                This is the URI your clients will connect to.
+              </span>
             </Grid>
 
             <Grid item xs={12}>
@@ -113,6 +119,9 @@ const Services = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              <span className="service_textbox_hints">
+                This is the URI your clients will connect to.
+              </span>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -131,6 +140,9 @@ const Services = () => {
                 }
                 error={formik.errors.host_name ? true : false}
               />
+              <span className="service_textbox_hints">
+                This is the URI your clients will connect to.
+              </span>
             </Grid>
             <Grid
               item

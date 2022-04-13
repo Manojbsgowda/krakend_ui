@@ -6,6 +6,7 @@ import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import ApiIcon from "@mui/icons-material/Api";
 import SecurityIcon from "@mui/icons-material/Security";
 import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
+import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import {
   List,
   ListItem,
@@ -70,7 +71,16 @@ const Sidebar = () => {
             <ListItemText primary="Services" />
           </ListItemButton>
         </ListItem>
-
+        <Divider />
+        <Divider sx={{ marginTop: 9 }} />
+        <ListItem disablePadding onClick={goToEndpointPage}>
+          <ListItemButton>
+            <ListItemIcon>
+              <DownloadForOfflineIcon />
+            </ListItemIcon>
+            <ListItemText primary="Download" />
+          </ListItemButton>
+        </ListItem>
         <Divider />
       </List>
     </div>

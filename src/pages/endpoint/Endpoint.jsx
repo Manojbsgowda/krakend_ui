@@ -29,12 +29,12 @@ import AlertDialogSlideForEndpoint from "../../components/dialog/EndpointRatelim
 
 const initialEndpointValue = {
   krakend_endpoint: "",
-  http_method: "",
+  http_method: "GET",
   parameters: "",
   headers_passing_to_backend: "",
   concurrent_calls: "",
-  backend_endpoint: "",
-  endpoint_http_method: "",
+  url_pattern: "",
+  endpoint_http_method: "GET",
 };
 
 const initialDialogValues = {
@@ -100,7 +100,7 @@ const Endpoint = () => {
       parameters: endpointInput.parameters,
       headers_passing_to_backend: endpointInput.headers_passing_to_backend,
       concurrent_calls: endpointInput.concurrent_calls,
-      backend_endpoint: endpointInput.backend_endpoint,
+      url_pattern: endpointInput.url_pattern,
       endpoint_http_method: endpointInput.endpoint_http_method,
       rate_limit: getDialogInputValues.rate_limit,
       user_quota: getDialogInputValues.user_quota,
@@ -166,24 +166,17 @@ const Endpoint = () => {
                       <TextField
                         id="krakend_endpoint"
                         name="krakend_endpoint"
-                        label="Krakend endpoint"
+                        label="krakenD Endpoint"
                         variant="outlined"
-                        placeholder="/krakend/v1"
+                        placeholder="/users/{username}"
                         value={endpointInput.krakend_endpoint}
                         fullWidth
                         required
                         autoFocus
                         onChange={handleEndpointInputs}
                       />
-                      <span
-                        style={{
-                          fontSize: 12,
-                          display: "flex",
-                          alignSelf: "flex-start",
-                          marginLeft: "4px",
-                        }}
-                      >
-                        HTTP verb
+                      <span className="textbox_hints">
+                        This is the URI your clients will connect to.
                       </span>
                     </Grid>
 
@@ -205,6 +198,7 @@ const Endpoint = () => {
                           <MenuItem value={"POST"}>POST</MenuItem>
                           <MenuItem value={"DELETE"}>DELETE</MenuItem>
                         </Select>
+                        <span className="textbox_hints">HTTP verb</span>
                       </FormControl>
                     </Grid>
 
@@ -219,6 +213,10 @@ const Endpoint = () => {
                         onChange={handleEndpointInputs}
                         fullWidth
                       />
+                      <span className="textbox_hints">
+                        Query string parameters to be passed to the backends
+                        when present,no question mark or equal symbols.
+                      </span>
                     </Grid>
 
                     <Grid item xs={6}>
@@ -232,6 +230,10 @@ const Endpoint = () => {
                         variant="outlined"
                         fullWidth
                       />
+                      <span className="textbox_hints">
+                        Allowed headers to pass from client to each of the
+                        backends.{" "}
+                      </span>
                     </Grid>
                     <Grid item xs={10}>
                       <TextField
@@ -244,6 +246,10 @@ const Endpoint = () => {
                         onChange={handleEndpointInputs}
                         fullWidth
                       />
+                      <span className="textbox_hints">
+                        Parallel requests you want to send to the backend for
+                        the same request.
+                      </span>
                     </Grid>
 
                     {/*  rate limit dialog screen */}
@@ -255,7 +261,7 @@ const Endpoint = () => {
                       <hr
                         style={{
                           height: 0.5,
-                          backgroundColor: "rgba(0,0,0,0.3)",
+                          backgroundColor: "rgb(128,0,0)",
                         }}
                       />
                     </Grid>
@@ -265,61 +271,69 @@ const Endpoint = () => {
                       xs={12}
                       sx={{ display: "flex", justifyContent: "flex-start" }}
                     >
-                      <Stack direction="row-reverse" spacing={2}>
+                      <Divider />
+                      {/* <Stack direction="row-reverse" spacing={2}>
                         <Button color="secondary">Cancel</Button>
                         <Button variant="contained" onClick={handleSubmit}>
                           Add Backend Query
                         </Button>
-                      </Stack>
+                      </Stack> */}
+
+                      <Typography variant="body1">
+                        Add Backend Inputs
+                      </Typography>
                     </Grid>
                   </Grid>
 
                   {/* ....second form for backend query.......................  */}
 
-                  <Box sx={{ padding: 10 }}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={6}>
-                        <TextField
-                          id="backend_endpoint"
-                          name="backend_endpoint"
-                          label="Backend Endpoint"
-                          value={endpointInput.backend_endpoint}
-                          onChange={handleEndpointInputs}
-                          variant="outlined"
-                          fullWidth
-                          required
-                          autoFocus
-                        />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <FormControl fullWidth>
-                          <InputLabel id="http_method_label">
-                            Http methods
-                          </InputLabel>
-                          <Select
-                            labelId="http_method_label"
-                            id="endpoint_http_method"
-                            name="endpoint_http_method"
-                            value={endpointInput.endpoint_http_method}
-                            onChange={handleEndpointInputs}
-                            label="Http methods"
-                          >
-                            <MenuItem value={"GET"}>GET</MenuItem>
-                            <MenuItem value={"PUT"}>PUT</MenuItem>
-                            <MenuItem value={"POST"}>POST</MenuItem>
-                            <MenuItem value={"DELETE"}>DELETE</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-
-                      {/*  rate limit dialog for endpoint screen */}
-                      <Grid item xs={2}>
-                        <AlertDialogSlideForEndpoint
-                          setEndpointDialogData={callbackEndpoint}
-                        />
-                      </Grid>
+                  <Grid container spacing={3} sx={{ marginTop: 2 }}>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="url_pattern"
+                        name="url_pattern"
+                        label="Backend Endpoint"
+                        value={endpointInput.url_pattern}
+                        onChange={handleEndpointInputs}
+                        variant="outlined"
+                        fullWidth
+                        required
+                        autoFocus
+                      />
+                      <span className="textbox_hints">
+                        The endpoint of the backend server to query. Reuse here
+                        any parameters defined in the parent endpoint.
+                      </span>
                     </Grid>
-                  </Box>
+                    <Grid item xs={3}>
+                      <FormControl fullWidth>
+                        <InputLabel id="http_method_label">
+                          Http methods
+                        </InputLabel>
+                        <Select
+                          labelId="http_method_label"
+                          id="endpoint_http_method"
+                          name="endpoint_http_method"
+                          value={endpointInput.endpoint_http_method}
+                          onChange={handleEndpointInputs}
+                          label="Http methods"
+                        >
+                          <MenuItem value={"GET"}>GET</MenuItem>
+                          <MenuItem value={"PUT"}>PUT</MenuItem>
+                          <MenuItem value={"POST"}>POST</MenuItem>
+                          <MenuItem value={"DELETE"}>DELETE</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <span className="textbox_hints">HTTP verb</span>
+                    </Grid>
+
+                    {/*  rate limit dialog for endpoint screen */}
+                    <Grid item xs={2}>
+                      <AlertDialogSlideForEndpoint
+                        setEndpointDialogData={callbackEndpoint}
+                      />
+                    </Grid>
+                  </Grid>
                 </Box>
               </AccordionDetails>
             </Accordion>
