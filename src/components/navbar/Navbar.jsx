@@ -47,7 +47,7 @@ const Navbar = () => {
     <>
       <div className="navbar_container">
         <div className="left_navbar_container">
-          <div className="logo">krakenD</div>
+          <div className="logo">ExzaArch</div>
 
           <div className="api_container">
             <div className="api_button" onClick={handleSidebar}>

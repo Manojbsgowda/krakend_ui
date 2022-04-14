@@ -18,8 +18,9 @@ import { InputLabel } from "@mui/material";
 import { OutlinedInput } from "@mui/material";
 import { InputAdornment } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import SettingsApplicationsTwoToneIcon from "@mui/icons-material/SettingsApplicationsTwoTone";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { useState } from "react";
+import SendIcon from "@mui/icons-material/Send";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -56,9 +57,17 @@ export default function AlertDialogSlide(props) {
 
   return (
     <div>
-      <IconButton>
-        <SettingsApplicationsTwoToneIcon onClick={handleClickOpen} />
-      </IconButton>
+      <Button
+        variant="contained"
+        endIcon={<SettingsIcon className="animate-spin " />}
+        onClick={handleClickOpen}
+      >
+        Rate limiting
+      </Button>
+      <span className="textbox_hints ml-4">
+        Enable usage limits for this endpoint
+      </span>
+
       <Dialog
         open={open}
         TransitionComponent={Transition}

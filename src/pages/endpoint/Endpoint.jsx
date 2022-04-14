@@ -73,12 +73,24 @@ const Endpoint = () => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const createNewEndpoint = () => {
+  const createNewEndpoint = (idd) => {
+    console.log(idd);
     setendpointArray([
       ...endpointArray,
       {
         id: uuidv4(),
         title1: "/v1/new-endpoint",
+        krakend_endpoint: "",
+        http_method: "GET",
+        parameters: "",
+        headers_passing_to_backend: "",
+        concurrent_calls: "",
+        url_pattern: "",
+        endpoint_http_method: "GET",
+        rate_limit: "",
+        user_quota: "",
+        endpoint_rate_limit: "",
+        Capacity_burstsize: "",
       },
     ]);
   };
@@ -86,14 +98,17 @@ const Endpoint = () => {
   const handleEndpointInputs = (e) => {
     setEndpointInput({ ...endpointInput, [e.target.name]: e.target.value });
   };
-  console.log(endpointInput);
+  // console.log(endpointInput);
 
   const deleteEndpoint = (id) => {
     setendpointArray(endpointArray.filter((item) => item.id !== id));
   };
-  // console.log(endpointArray);
+  console.log(endpointArray);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, idd) => {
+    console.log(idd);
+    var objIndex = endpointArray.findIndex((obj) => obj.id === idd);
+    endpointArray[objIndex].name = "runs";
     const data = {
       krakend_endpoint: endpointInput.krakend_endpoint,
       http_method: endpointInput.http_method,
@@ -108,21 +123,35 @@ const Endpoint = () => {
       Capacity_burstsize: getEndpointRatelimitDialog.Capacity_burstsize,
     };
     console.log("each endpoints", data);
-    setgetDialogInputValues(initialDialogValues);
-    setgetEndpointRatelimitDialog(initialEndpointDialogValues);
-    setEndpointInput(initialEndpointValue);
+    endpointArray[objIndex].krakend_endpoint = endpointInput.krakend_endpoint;
+    endpointArray[objIndex].http_method = endpointInput.http_method;
+    endpointArray[objIndex].parameters = endpointInput.parameters;
+    endpointArray[objIndex].headers_passing_to_backend =
+      endpointInput.headers_passing_to_backend;
+    endpointArray[objIndex].concurrent_calls = endpointInput.concurrent_calls;
+    endpointArray[objIndex].url_pattern = endpointInput.url_pattern;
+    endpointArray[objIndex].endpoint_http_method =
+      endpointInput.endpoint_http_method;
+    endpointArray[objIndex].rate_limit = getDialogInputValues.rate_limit;
+    endpointArray[objIndex].user_quota = getDialogInputValues.user_quota;
+    endpointArray[objIndex].endpoint_rate_limit =
+      getEndpointRatelimitDialog.endpoint_rate_limit;
+    endpointArray[objIndex].Capacity_burstsize =
+      getEndpointRatelimitDialog.Capacity_burstsize;
   };
 
   //   const endpointList = endpointAcordian;
   return (
     <main className="endpoint_container">
       <div class="endpoint_title_container">
-        <p id="e_para_1" className="e_title">
+        <p id="e_para_1" className="e_title ">
           <b>Endpoints list</b>
         </p>
       </div>
       <div className="endpoint_acordian">
         {endpointArray.map((value, index) => {
+          console.log("vaL", value);
+
           return (
             <Accordion
               key={value.id}
@@ -134,6 +163,7 @@ const Endpoint = () => {
                   backgroundColor: "#eee",
                   display: "flex",
                   alignContent: "center",
+                  marginTop: "18px",
                 }}
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
@@ -232,10 +262,10 @@ const Endpoint = () => {
                       />
                       <span className="textbox_hints">
                         Allowed headers to pass from client to each of the
-                        backends.{" "}
+                        backends.
                       </span>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={9}>
                       <TextField
                         id="concurrent_calls"
                         name="concurrent_calls"
@@ -253,7 +283,7 @@ const Endpoint = () => {
                     </Grid>
 
                     {/*  rate limit dialog screen */}
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
                       <AlertDialogSlide setDialogData={callbackDialog} />
                     </Grid>
 
@@ -328,11 +358,16 @@ const Endpoint = () => {
                     </Grid>
 
                     {/*  rate limit dialog for endpoint screen */}
-                    <Grid item xs={2}>
+                    <Grid item xs={3} className="flex items-center">
                       <AlertDialogSlideForEndpoint
                         setEndpointDialogData={callbackEndpoint}
                       />
                     </Grid>
+                  </Grid>
+                  <Grid>
+                    <Button onClick={(event) => handleSubmit(event, value.id)}>
+                      Add
+                    </Button>
                   </Grid>
                 </Box>
               </AccordionDetails>

@@ -20,6 +20,7 @@ import { InputAdornment } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SettingsApplicationsTwoToneIcon from "@mui/icons-material/SettingsApplicationsTwoTone";
 import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
+import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -57,9 +58,16 @@ export default function AlertDialogSlideForEndpoint(props) {
 
   return (
     <div>
-      <IconButton>
-        <DataThresholdingIcon onClick={handleClickOpen} />
-      </IconButton>
+      <Button
+        variant="contained"
+        endIcon={<OfflineBoltIcon className="animate-pulse " />}
+        onClick={handleClickOpen}
+      >
+        Endpoint Rate limit
+      </Button>
+      <span className="textbox_hints">
+        Limit the number of requests this backend will receive.
+      </span>
       <Dialog
         open={open}
         TransitionComponent={Transition}
